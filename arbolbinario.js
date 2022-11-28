@@ -14,6 +14,8 @@ class ArbolBinario{
     {
         this.primero = null;
         this.ultimo = null; 
+        this.pre = "";
+        this.post = ""; 
     }
 
     agregar(nuevo)
@@ -112,12 +114,52 @@ class ArbolBinario{
         } 
         
         this.primero = arbol; 
-        console.log(this.primero);
-
     }
+
+    preOrder() 
+    {
+        let res = ""; 
+        if(this.primero === null) 
+            return null; 
+        else 
+            res = this._preOrder(this.primero); 
+        return res;
+    }
+
+    _preOrder(nodox) 
+    {
+        this.pre += `${nodox.dato} `; 
+        if(nodox.hizq !== null)
+            this._preOrder(nodox.hizq);
+        if(nodox.hder !== null) 
+            this._preOrder(nodox.hder);
+        return this.pre;
+    }
+
+    postOrder() 
+    {
+        let res = ""; 
+        if(this.primero === null) 
+            return null; 
+        else 
+            res = this._postOrder(this.primero); 
+        return res;
+    }
+
+    _postOrder(nodox) 
+    {
+        if(nodox.hizq !== null)
+            this._postOrder(nodox.hizq);
+        if(nodox.hder !== null) 
+            this._postOrder(nodox.hder);
+        this.post += `${nodox.dato} `; 
+        return this.post;
+    }
+    
+     
 }
 
-let expresion = '2*8+4+3-2*9/6-3*4/2/2';
+let expresion = '4-2+3*5-8*3/6';
 let array = Array.from(expresion);
 let nodo = new Nodo();
 let arbol = new ArbolBinario(); 
@@ -129,3 +171,5 @@ for(let i = 0; i < array.length; i++)
 }
 
 arbol.recorrer();
+console.log('preOrder', arbol.preOrder()); 
+console.log('postOrder', arbol.postOrder()); 
