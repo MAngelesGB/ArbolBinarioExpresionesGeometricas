@@ -36,7 +36,6 @@ class ArbolBinario{
     recorrer()
     {
         let temp = this.primero;
-        let arbol = null; 
 
         while(temp !== null)
         {
@@ -107,13 +106,11 @@ class ArbolBinario{
                     temp.ant.sig = temp; 
                     temp.sig.ant = temp; 
                 }
-                arbol = temp; 
+                this.primero = temp; 
             }
-
             temp = temp.sig; 
-        } 
+        }
         
-        this.primero = arbol; 
     }
 
     preOrder() 
@@ -128,7 +125,7 @@ class ArbolBinario{
 
     _preOrder(nodox) 
     {
-        this.pre += `${nodox.dato} `; 
+        this.pre += `${nodox.dato}`; 
         if(nodox.hizq !== null)
             this._preOrder(nodox.hizq);
         if(nodox.hder !== null) 
@@ -152,11 +149,100 @@ class ArbolBinario{
             this._postOrder(nodox.hizq);
         if(nodox.hder !== null) 
             this._postOrder(nodox.hder);
-        this.post += `${nodox.dato} `; 
+        this.post += `${nodox.dato}`; 
         return this.post;
     }
+
+    lifo(preOrder)
+    {
+        let resultado = []; 
+        let dato1 = 0; 
+        let dato2 = 0; 
+        let res = 0; 
+        let opc = ""; 
+        for(let i = preOrder.length-1; i >= 0; i--)
+        {
+            if((preOrder[i] === '*') || (preOrder[i] === '/') || (preOrder[i] === '+') || (preOrder[i] === '-'))
+            {
+                dato1 = resultado.pop(); 
+                dato2 = resultado.pop(); 
+                opc = preOrder[i]; 
+
+                switch (opc) {
+                    case '+':
+                        res = dato1 + dato2; 
+                    break;
+        
+                    case '-':
+                        res = dato1 - dato2; 
+                    break;
+        
+                    case '*':
+                        res = dato1 * dato2; 
+                    break;
+        
+                    case '/':
+                        res = dato1 / dato2; 
+                    break;
+                }
+
+                resultado.push(res); 
+
+            }
+            else
+            {
+                resultado.push(parseInt(preOrder[i])); 
+            }
     
-     
+        }
+        return resultado[0]; 
+    }
+
+    fifo(postOrder)
+    {
+        let resultado = []; 
+        let dato1 = 0; 
+        let dato2 = 0; 
+        let res = 0; 
+        let opc = ""; 
+
+        for(let i = 0; i < postOrder.length; i++)
+        {
+            if((postOrder[i] === '*') || (postOrder[i] === '/') || (postOrder[i] === '+') || (postOrder[i] === '-'))
+            {
+                dato1 = resultado.pop(); 
+                dato2 = resultado.pop(); 
+                opc = postOrder[i]; 
+
+                switch (opc) {
+                    case '+':
+                        res = dato2 + dato1; 
+                    break;
+        
+                    case '-':
+                        res = dato2 - dato1; 
+                    break;
+        
+                    case '*':
+                        res = dato2 * dato1; 
+                    break;
+        
+                    case '/':
+                        res = dato2 / dato1; 
+                    break;
+                }
+
+                resultado.push(res); 
+            }
+            else
+            {
+                resultado.push(parseInt(postOrder[i])); 
+            }
+    
+        }
+        return resultado[0]; 
+    }
+
 }
 
 let expresion = '4-2+3*5-8*3/6';
@@ -173,3 +259,5 @@ for(let i = 0; i < array.length; i++)
 arbol.recorrer();
 console.log('preOrder', arbol.preOrder()); 
 console.log('postOrder', arbol.postOrder()); 
+console.log('lifo', arbol.lifo(Array.from(arbol.preOrder())));  
+console.log('fifo', arbol.fifo(Array.from(arbol.postOrder()))); 
