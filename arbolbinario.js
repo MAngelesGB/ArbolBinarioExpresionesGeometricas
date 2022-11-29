@@ -41,71 +41,19 @@ class ArbolBinario{
         {
             if(temp.dato === '*' || temp.dato === '/')
             {   
-                temp.hizq = temp.ant; 
-                temp.hder = temp.sig;
-
-                if(temp.ant.ant === null && temp.sig.sig === null)
-                {
-                    temp.sig = null; 
-                    temp.ant =  null; 
-                }
-                else if(temp.sig.sig === null)
-                {
-                    temp.sig = null; 
-                    temp.ant = temp.ant.ant; 
-                    temp.ant.sig = temp; 
-                }
-                else if(temp.ant.ant === null)
-                {
-                    temp.ant = null;
-                    temp.sig = temp.sig.sig;
-                    temp.sig.ant = temp; 
-                }
-                else 
-                {
-                    temp.sig = temp.sig.sig; 
-                    temp.ant = temp.ant.ant; 
-                    temp.ant.sig = temp; 
-                    temp.sig.ant = temp; 
-                }
+                this._recorrer(temp); 
             }
 
             temp = temp.sig; 
         } 
         
-        temp = this. primero; 
+        temp = this.primero; 
         
         while(temp !== null)
         {
             if(temp.dato === '+' || temp.dato === '-')
             {   
-                temp.hizq = temp.ant; 
-                temp.hder = temp.sig;
-
-                if(temp.ant.ant === null && temp.sig.sig === null)
-                {
-                    temp.sig = null; 
-                    temp.ant =  null; 
-                }
-                else if(temp.sig.sig === null)
-                {
-                    temp.sig = null; 
-                    temp.ant = temp.ant.ant; 
-                    temp.ant.sig = temp; 
-                }
-                else if(temp.ant.ant === null)
-                {
-                    temp.ant = null;
-                    temp.sig = temp.sig.sig;
-                    temp.sig.ant = temp; 
-                }
-                else 
-                {
-                    temp.sig = temp.sig.sig; 
-                    temp.ant = temp.ant.ant; 
-                    temp.ant.sig = temp; 
-                    temp.sig.ant = temp; 
-                }
+                this._recorrer(temp); 
                 this.primero = temp; 
             }
             temp = temp.sig; 
@@ -113,14 +61,44 @@ class ArbolBinario{
         
     }
 
+    _recorrer(temp)
+    {
+        temp.hizq = temp.ant; 
+        temp.hder = temp.sig;
+
+        if(temp.ant.ant === null && temp.sig.sig === null)
+        {
+            temp.sig = null; 
+            temp.ant =  null; 
+        }
+        else if(temp.ant.ant === null)
+        {
+            temp.ant = null;
+            temp.sig = temp.sig.sig;
+            temp.sig.ant = temp; 
+        }
+        else if(temp.sig.sig === null)
+        {
+            temp.sig = null; 
+            temp.ant = temp.ant.ant; 
+            temp.ant.sig = temp; 
+        }
+        else 
+        {
+            temp.sig = temp.sig.sig; 
+            temp.ant = temp.ant.ant; 
+            temp.ant.sig = temp; 
+            temp.sig.ant = temp; 
+        }
+    }
+
     preOrder() 
     {
-        let res = ""; 
         if(this.primero === null) 
             return null; 
         else 
-            res = this._preOrder(this.primero); 
-        return res;
+            this._preOrder(this.primero); 
+        return this.pre;
     }
 
     _preOrder(nodox) 
@@ -130,17 +108,15 @@ class ArbolBinario{
             this._preOrder(nodox.hizq);
         if(nodox.hder !== null) 
             this._preOrder(nodox.hder);
-        return this.pre;
     }
 
     postOrder() 
     {
-        let res = ""; 
         if(this.primero === null) 
             return null; 
         else 
-            res = this._postOrder(this.primero); 
-        return res;
+            this._postOrder(this.primero); 
+        return this.post;
     }
 
     _postOrder(nodox) 
@@ -150,7 +126,6 @@ class ArbolBinario{
         if(nodox.hder !== null) 
             this._postOrder(nodox.hder);
         this.post += `${nodox.dato}`; 
-        return this.post;
     }
 
     lifo(preOrder)
@@ -167,7 +142,7 @@ class ArbolBinario{
                 dato1 = resultado.pop(); 
                 dato2 = resultado.pop(); 
                 opc = preOrder[i]; 
-
+            
                 switch (opc) {
                     case '+':
                         res = dato1 + dato2; 
@@ -238,14 +213,14 @@ class ArbolBinario{
             {
                 resultado.push(parseInt(postOrder[i])); 
             }
-    
+            
         }
         return resultado[0]; 
     }
 
 }
 
-let expresion = '4-2+3*5-8*3/6';
+let expresion = '2*8+4+3-2*9/6-3*4/2/2';
 let array = Array.from(expresion);
 let nodo = new Nodo();
 let arbol = new ArbolBinario(); 
