@@ -14,8 +14,7 @@ class ArbolBinario{
     {
         this.primero = null;
         this.ultimo = null; 
-        this.pre = "";
-        this.post = ""; 
+        this.prePost = "";
     }
 
     agregar(nuevo)
@@ -94,16 +93,17 @@ class ArbolBinario{
 
     preOrder() 
     {
+        this.prePost = ""; 
         if(this.primero === null) 
             return null; 
         else 
             this._preOrder(this.primero); 
-        return this.pre;
+        return this.prePost;
     }
 
     _preOrder(nodox) 
     {
-        this.pre += `${nodox.dato}`; 
+        this.prePost += `${nodox.dato}`; 
         if(nodox.hizq !== null)
             this._preOrder(nodox.hizq);
         if(nodox.hder !== null) 
@@ -112,11 +112,12 @@ class ArbolBinario{
 
     postOrder() 
     {
+        this.prePost = ""; 
         if(this.primero === null) 
             return null; 
         else 
             this._postOrder(this.primero); 
-        return this.post;
+        return this.prePost;
     }
 
     _postOrder(nodox) 
@@ -125,7 +126,7 @@ class ArbolBinario{
             this._postOrder(nodox.hizq);
         if(nodox.hder !== null) 
             this._postOrder(nodox.hder);
-        this.post += `${nodox.dato}`; 
+        this.prePost += `${nodox.dato}`; 
     }
 
     lifo(preOrder)
@@ -134,33 +135,21 @@ class ArbolBinario{
         let dato1 = 0; 
         let dato2 = 0; 
         let res = 0; 
-        let opc = ""; 
         for(let i = preOrder.length-1; i >= 0; i--)
         {
             if((preOrder[i] === '*') || (preOrder[i] === '/') || (preOrder[i] === '+') || (preOrder[i] === '-'))
             {
                 dato1 = resultado.pop(); 
                 dato2 = resultado.pop(); 
-                opc = preOrder[i]; 
             
-                switch (opc) {
-                    case '+':
-                        res = dato1 + dato2; 
-                    break;
-        
-                    case '-':
-                        res = dato1 - dato2; 
-                    break;
-        
-                    case '*':
-                        res = dato1 * dato2; 
-                    break;
-        
-                    case '/':
-                        res = dato1 / dato2; 
-                    break;
-                }
-
+                if(preOrder[i] === '*')
+                    res = dato1 * dato2;
+                else if(preOrder[i] === '/')
+                    res = dato1 / dato2;
+                else if(preOrder[i] === '+')
+                    res = dato1 + dato2; 
+                else if(preOrder[i] === '-')
+                    res = dato1 - dato2; 
                 resultado.push(res); 
 
             }
@@ -179,7 +168,6 @@ class ArbolBinario{
         let dato1 = 0; 
         let dato2 = 0; 
         let res = 0; 
-        let opc = ""; 
 
         for(let i = 0; i < postOrder.length; i++)
         {
@@ -187,27 +175,17 @@ class ArbolBinario{
             {
                 dato1 = resultado.pop(); 
                 dato2 = resultado.pop(); 
-                opc = postOrder[i]; 
 
-                switch (opc) {
-                    case '+':
-                        res = dato2 + dato1; 
-                    break;
-        
-                    case '-':
-                        res = dato2 - dato1; 
-                    break;
-        
-                    case '*':
-                        res = dato2 * dato1; 
-                    break;
-        
-                    case '/':
-                        res = dato2 / dato1; 
-                    break;
-                }
-
+                if(postOrder[i] === '*')
+                    res = dato2 * dato1;
+                else if(postOrder[i] === '/')
+                    res = dato2 / dato1;
+                else if(postOrder[i] === '+')
+                    res = dato2 + dato1; 
+                else if(postOrder[i] === '-')
+                    res = dato2 - dato1; 
                 resultado.push(res); 
+
             }
             else
             {
